@@ -1,6 +1,7 @@
 import nuke
 from PySide2 import QtWidgets
 from functools import partial
+
 class ChannelButtonPanel(QtWidgets.QDialog):
    def _init_(self, node, parent=None):
        super(ChannelButtonPanel, self)._init_(parent)
