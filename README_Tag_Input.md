@@ -23,17 +23,17 @@ To install the script and set it up with a custom menu and keyboard shortcut, fo
 
 2. Open or create the `init.py` file in your `.nuke` directory. Add the path to your Python folder where the script is stored:
 
-
+```python
 nuke.pluginAddPath('./python')
-
+```
 
 ### 3. Create a New Menu Item in `menu.py`
 
 3. In the `.nuke` directory, open or create the `menu.py` file. You'll create a new menu called `V_commands` and assign a shortcut key (`Alt+T`) to run the script. Add the following lines to `menu.py`:
 
-
+```python
 import nuke
-import your_script_name  # Replace with your actual script name without the .py extension
+import your_script_name  # Replace with your actual script name without the .py extension e.g. Tag_input.py
 
 # Create a custom menu in Nuke
 menubar = nuke.menu("Nuke")
@@ -41,7 +41,7 @@ v_commands = menubar.addMenu("V_commands")
 
 # Add the command to the new menu and assign a shortcut
 v_commands.addCommand("Tag Input Node", lambda: your_script_name.create_tag_input_node(), "Alt+T")
-
+```
 
 ### 4. Usage
 
