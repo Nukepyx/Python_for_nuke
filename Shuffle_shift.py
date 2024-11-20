@@ -64,5 +64,5 @@ def select_channel_for_shuffle():
         pass
     else:
         nuke.message("No channel selected.")
-#Disbaled the below code temporary
+#Enable below code to test
 #select_channel_for_shuffle()
