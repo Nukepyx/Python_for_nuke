@@ -210,6 +210,12 @@ After these changes, restart Nuke for the script and menu item to appear.
 5. **Jump to Input**:
    - Use `Jump to Input` to zoom into the connected parent node in your Node Graph for easy navigation.
 
+
+## **Preview**
+
+![Channel Selector Screenshot](assets/screenshots/Tag_input_snip.png)
+
+
 ## Error Handling
 
 - If no node is selected when you click `Get Name`, a message will prompt you to select a node.
