@@ -230,3 +230,80 @@ Contributions are welcome! If you'd like to improve the script or add new featur
 ## Contact
 
 For any questions or issues, feel free to reach out via GitHub issues or submit a pull request for improvements.
+
+
+# V_backdrop_inator
+
+**V_backdrop_inator** is a Nuke Python script that provides an interactive UI with buttons and a color picker for creating and managing backdrops efficiently.
+
+## Features
+- Creates backdrops with customizable colors.
+- Uses Qt widgets for an intuitive UI.
+- Provides quick interaction through buttons.
+
+## Installation
+### Windows
+1. Locate your `.nuke` directory, usually found at:
+   - `C:\Users\YourUsername\.nuke`
+2. Copy `V_backdrop_inator.py` into the `.nuke/python` folder (create the folder if it doesn’t exist).
+3. Update `init.py` (or create it if missing) inside `.nuke` with:
+
+   ```python
+   import os
+   import nuke
+   nuke.pluginAddPath(os.path.expanduser("~/.nuke/python"))
+   ```
+4. Modify `menu.py` in the `.nuke` folder:
+
+   ```python
+   import nuke
+   import V_backdrop_inator
+   
+   menubar = nuke.menu('Nuke')
+   v_commands = menubar.addMenu('V_commands')
+   v_commands.addCommand('Create Backdrop', 'V_backdrop_inator.launch_backdrop_creator()', 'ctrl+alt+B')
+   ```
+
+### macOS & Linux
+1. Open Terminal and navigate to your home directory:
+   ```sh
+   cd ~/.nuke
+   ```
+2. Create a `python` folder if it doesn’t exist:
+   ```sh
+   mkdir -p ~/.nuke/python
+   ```
+3. Move `V_backdrop_inator.py` into this folder.
+4. Add the following to `~/.nuke/init.py`:
+   ```python
+   import os
+   import nuke
+   nuke.pluginAddPath(os.path.expanduser("~/.nuke/python"))
+   ```
+5. Modify `~/.nuke/menu.py`:
+   ```python
+   import nuke
+   import V_backdrop_inator
+   
+   menubar = nuke.menu('Nuke')
+   v_commands = menubar.addMenu('V_commands')
+   v_commands.addCommand('Create Backdrop', 'V_backdrop_inator.launch_backdrop_creator()', 'ctrl+alt+B')
+   ```
+
+## Usage
+- Open Nuke.
+- Press `ctrl+alt+B` or use the `V_commands` menu to launch **V_backdrop_inator**.
+- Interact with the UI to create and modify backdrops effortlessly.
+
+## Screenshot
+![V_backdrop_inator UI](assets/screenshots/Backdrop_inator_snip.png)
+
+## Author
+Developed by **Vikas Kaushal**.
+
+## License
+This project is licensed under the MIT License.
+
+## Contributions
+Feel free to submit issues or feature requests to improve this tool!
+
