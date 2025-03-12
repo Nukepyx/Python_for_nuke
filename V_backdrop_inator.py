@@ -14,10 +14,10 @@ class BackdropCreator(QtWidgets.QDialog):
         self.label_text = None
         self.backdrop_color = None
         self.font_color = 0xFFFFFFFFFF
-        self.padding = 30
+        self.padding = 100
         self.color_saturation = 0.35  # Saturation value
         self.color_value = 0.35       # Value (brightness)
-        self.font_size = 100  # Default font size
+        self.font_size = 70  # Default font size
 
         # Preset label-color mappings with adjusted colors
         self.label_color_presets = self.generate_muted_colors({
@@ -76,11 +76,13 @@ class BackdropCreator(QtWidgets.QDialog):
         for name, (hue, sat) in base_colors.items():
             # Modify value for specific colors
             if name in ["Red", "Green", "Blue", "Yellow"]:
-                value = 0.6  # Higher brightness for these colors
+                value = 0.5  # Higher brightness for these colors
+                saturation = 0.7 # Higher Saturation for these colors
             else:
                 value = self.color_value  # Default value
+                saturation = self.color_saturation
             # Convert HSV to RGB, then to Nuke's color format
-            rgb = colorsys.hsv_to_rgb(hue/360, self.color_saturation, self.color_value)
+            rgb = colorsys.hsv_to_rgb(hue/360, saturation, value)
             # Convert RGB to Nuke's color format (0-255 scaled to hex with alpha)
             color_value = (int(rgb[0]*255) << 24) + \
                           (int(rgb[1]*255) << 16) + \
@@ -305,6 +307,6 @@ def launch_backdrop_creator():
         dialog.exec_()
 
 
-# menubar = nuke.menu("Nuke")
+#menubar = nuke.menu("Nuke")
 #v_commands = menubar.addMenu("V_commands")
 #v_commands.addCommand("Create Backdrop", lambda: launch_backdrop_creator(), "ctrl+alt+B")
