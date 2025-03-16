@@ -2,6 +2,33 @@ import nuke
 from PySide2 import QtWidgets, QtGui, QtCore
 from functools import partial
 import colorsys
+import os
+import json
+
+SETTINGS_FILE = os.path.join(os.path.expanduser("~"), ".v_backdrop_settings.json")
+
+def load_settings():
+    if os.path.exists(SETTINGS_FILE):
+        try:
+            with open(SETTINGS_FILE, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {"padding": 100, "font_size": 70}  # Reset if corrupted
+    return {"padding": 100, "font_size": 70}  # Default values if settings file does not exist
+
+def save_settings(settings):
+    try:
+        with open(SETTINGS_FILE, "w") as f:
+            json.dump(settings, f, indent=4)
+    except IOError as e:
+        nuke.message(f"Error saving settings: {str(e)}")
+
+def get_lowest_z_order(selected_nodes):
+    """Finds the lowest z_order among selected BackdropNodes."""
+    backdrops = [n for n in selected_nodes if n.Class() == "BackdropNode"]
+    if not backdrops:
+        return -700
+    return min([n["z_order"].value() for n in backdrops]) - 1
 
 class BackdropCreator(QtWidgets.QDialog):
     def __init__(self):
@@ -10,14 +37,19 @@ class BackdropCreator(QtWidgets.QDialog):
         self.setWindowTitle("Enhanced Backdrop Creator")
         self.setMinimumWidth(400)
 
+        # Load saved settings
+        self.settings = load_settings()
+        self.padding = self.settings.get("padding", 100)
+        self.font_size = self.settings.get("font_size", 70)
+
         # Initialize variables
         self.label_text = None
         self.backdrop_color = None
         self.font_color = 0xFFFFFFFFFF
-        self.padding = 100
+        #self.padding = 100
         self.color_saturation = 0.35  # Saturation value
         self.color_value = 0.35       # Value (brightness)
-        self.font_size = 70  # Default font size
+        #self.font_size = 70  # Default font size
 
         # Preset label-color mappings with adjusted colors
         self.label_color_presets = self.generate_muted_colors({
@@ -226,6 +258,19 @@ class BackdropCreator(QtWidgets.QDialog):
         # Set focus on label input
         self.label_input.setFocus()
 
+    def update_padding(self, value):
+        self.padding = value
+        self.save_current_settings()
+
+    def update_font_size(self, value):
+        self.font_size = value
+        self.save_current_settings()
+
+    def save_current_settings(self):
+        self.settings["padding"] = self.padding
+        self.settings["font_size"] = self.font_size
+        save_settings(self.settings)
+
     def pick_custom_color(self):
         """Opens a color dialog and sets the backdrop color."""
         color = QtWidgets.QColorDialog.getColor()
@@ -281,19 +326,13 @@ class BackdropCreator(QtWidgets.QDialog):
 
             # Set label text color to white
             backdrop["note_font_color"].setValue(0xFFFFFFFF)
+            backdrop["z_order"].setValue(get_lowest_z_order(selected_nodes))  # Adjust Z order properly
 
             self.close()  # Close the UI after creating the backdrop
 
         except Exception as e:
             nuke.message(f"Error creating backdrop: {str(e)}")
 
-    def update_padding(self, value):
-        """Update backdrop padding value"""
-        self.padding = value
-
-    def update_font_size(self, value):
-        """Update backdrop font size value."""
-        self.font_size = value
 
     def set_color_and_create(self, color_value):
         """Sets the backdrop tile color and creates backdrop"""
