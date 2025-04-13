@@ -1,315 +1,185 @@
+```markdown
+# **Nuke Workflow Tools by Vikas Kaushal**
 
-# **Shuffle Shift: Nuke Channel Selector for Shuffle Nodes**
-
-A Python script leveraging PySide2 to simplify channel selection for `Shuffle` and `Shuffle2` nodes in Nuke. This tool enhances workflow efficiency by providing an intuitive GUI for channel selection.
+A collection of Python scripts to enhance compositing efficiency in Nuke. These tools provide intuitive GUIs and automation for managing channels, tagging nodes, and organizing backdrops, designed to streamline your workflow.
 
 ---
 
-## **Features**
+## **Overview**
 
-- **Dynamic Channel Retrieval**: Automatically lists all available channels in the selected node.
-- **Prioritized Sorting**: Channels like `rgb`, `rgba`, and `alpha` appear first, followed by others alphabetically.
-- **Interactive GUI**: Buttons for each channel and a "Cancel" option for easy navigation.
-- **Supports Multiple Node Types**: Compatible with both `Shuffle` and `Shuffle2` nodes.
+This repository includes:
+
+- **Shuffle Shift**: Simplifies channel selection for `Shuffle` and `Shuffle2` nodes with a button-based GUI.
+- **Tag Input Node**: Automates creation and connection of custom `Tag_Input` nodes for easy node tracking.
+- **Backdrop Inator**: Creates customizable backdrops with an interactive UI and color picker.
+- **Shuffle Dropdown**: Enhances channel management for `Shuffle` and `Shuffle2` nodes with dropdowns and custom channel creation.
 
 ---
 
 ## **Installation**
 
-### **Step 1: Clone or Download the Repository**
-Clone or download this repository:
-```bash
-git clone https://github.com/your-username/shuffle_shift.git
+### **Step 1: Copy Scripts to Nuke Directory**
+1. Place all script files (`shuffle_shift.py`, `tag_input.py`, `V_backdrop_inator.py`, `V_shuffle_dropdown.py`) in your `.nuke/python` directory:
+   - **Windows**: `C:\Users\<YourUsername>\.nuke\python`
+   - **macOS/Linux**: `~/.nuke/python`
+2. If the `python` folder doesn’t exist, create it.
+
+### **Step 2: Update `init.py`**
+Ensure Nuke loads the scripts by adding the `python` folder to the plugin path:
+1. Open or create `init.py` in your `.nuke` directory.
+2. Add:
+
+```python
+import nuke
+nuke.pluginAddPath("./python")
 ```
 
-### **Step 2: Copy Script to the Nuke Directory**
-1. Move the script (`shuffle_shift.py`) to your `.nuke/python` directory:
-   - **Windows**: `C:\Users\<YourUsername>\.nuke\python`
-   - **Linux**: `/home/<YourUsername>/.nuke/python`
-
-2. If the `python` folder doesn’t exist, create it manually.
-
----
-
 ### **Step 3: Update `menu.py`**
-
-To install the script into Nuke's menu with your preferred setup:
-
-1. Open (or create) your `menu.py` file in the `.nuke` directory:
-   - **Windows**: `C:\Users\<YourUsername>\.nuke\menu.py`
-   - **Linux**: `/home/<YourUsername>/.nuke/menu.py`
-
-2. Add the following code to include the tool in Nuke's menu:
+Add all tools to a custom Nuke menu:
+1. Open or create `menu.py` in your `.nuke` directory.
+2. Add:
 
 ```python
 import nuke
 import shuffle_shift
+import tag_input
+import V_backdrop_inator
+import V_shuffle_dropdown
 
-# Create a custom menu in Nuke
+# Create custom menu
 menubar = nuke.menu("Nuke")
 v_commands = menubar.addMenu("V_commands")
 
-# Add the Shuffle Shift command to the menu
-v_commands.addCommand("Shuffle Shift", lambda: shuffle_shift.select_channel_for_shuffle(), "Alt+`")
+# Add tool commands
+v_commands.addCommand("Shuffle Shift", "shuffle_shift.select_channel_for_shuffle()", "Alt+`")
+v_commands.addCommand("Tag Input Node", "tag_input.create_tag_input_node()", "Alt+T")
+v_commands.addCommand("Create Backdrop", "V_backdrop_inator.launch_backdrop_creator()", "Ctrl+Alt+B")
+v_commands.addCommand("Shuffle Dropdown", "V_shuffle_dropdown.create_shuffle_ui()", "Ctrl+Shift+S")
 ```
 
-3. Save the file and restart Nuke.
+3. Save and restart Nuke.
 
 ---
 
-## **Usage**
+## **Tools**
 
-1. **Select a Node**:
-   - Select a `Shuffle` or `Shuffle2` node in Nuke's Node Graph.
+### **1. Shuffle Shift**
 
-2. **Launch the Tool**:
-   - Access **Shuffle Shift** from the **"V_commands"** menu in Nuke's toolbar.
-   - Or use the shortcut "Alt+`".
+Simplifies channel selection for `Shuffle` and `Shuffle2` nodes with a button-based interface.
 
-3. **Choose a Channel**:
-   - A dialog with buttons for each channel appears.
-   - Click a button to assign the channel to the node.
+#### **Features**
+- Lists all available channels dynamically.
+- Prioritizes `rgb`, `rgba`, and `alpha` in the UI.
+- Supports both `Shuffle` and `Shuffle2` nodes.
+- Includes a Cancel button to exit without changes.
 
-4. **Cancel Operation**:
-   - Click "Cancel" to close the dialog without making changes.
+#### **Usage**
+1. Select a `Shuffle` or `Shuffle2` node.
+2. Launch via `V_commands -> Shuffle Shift` or `Alt+`.
+3. Click a channel button to assign it.
+4. Click Cancel to close without changes.
+
+#### **Preview**
+![Shuffle Shift UI](assets/screenshots/shuffle_shift_snip.png)
+
+---
+
+### **2. Tag Input Node**
+
+Automates creation of `Tag_Input` nodes to tag and connect to parent nodes, improving node graph navigation.
+
+#### **Features**
+- Generates unique node names (e.g., `Tag_input1`).
+- Fetches and displays the selected node’s name.
+- Connects the `Tag_Input` node to the parent.
+- Includes a `Jump to Input` button to zoom to the parent node.
+
+#### **Usage**
+1. Run via `V_commands -> Tag Input Node` or `Alt+T`.
+2. Select a node, click `Get Name` to display its name.
+3. Click `Connect` to link the `Tag_Input` node.
+4. Use `Jump to Input` to navigate to the parent.
+
+#### **Preview**
+![Tag Input UI](assets/screenshots/Tag_input_snip.png)
+
+---
+
+### **3. Backdrop Inator**
+
+Creates customizable backdrops with an interactive UI and color picker for better node graph organization.
+
+#### **Features**
+- Offers buttons for quick backdrop creation.
+- Includes a color picker for custom colors.
+- Built with Qt for a user-friendly experience.
+
+#### **Usage**
+1. Launch via `V_commands -> Create Backdrop` or `Ctrl+Alt+B`.
+2. Use the UI to set backdrop properties and colors.
+3. Apply to create the backdrop in the node graph.
+
+#### **Preview**
+![Backdrop Inator UI](assets/screenshots/Backdrop_inator_snip.png)
+
+---
+
+### **4. Shuffle Dropdown**
+
+Enhances channel management for `Shuffle` and `Shuffle2` nodes with dropdowns and custom channel creation.
+
+#### **Features**
+- Lists input channels dynamically, defaulting to current `in`/`in1` and `out`/`out1` values.
+- Supports creating custom output channels with RGBA sub-channels.
+- Fallback to `rgba` for output if unset.
+- Compatible with old (`Shuffle`) and new (`Shuffle2`) nodes.
+- Clean GUI with dropdowns and a custom channel text field.
+
+#### **Usage**
+1. Select a `Shuffle` or `Shuffle2` node.
+2. Launch via `V_commands -> Shuffle Dropdown` or `Ctrl+Shift+S`.
+3. Choose input/output channels from dropdowns or enter a custom output channel.
+4. Click `Apply` to update the node.
+
+#### **Preview**
+![Shuffle Dropdown UI](assets/screenshots/V_shuffle_dropdown_snip.png)
+*Note: Replace with an actual screenshot path once created.*
 
 ---
 
 ## **Requirements**
 
-- **Nuke**: Version 11 and above.
-- **Python**: Version 2.7+ or 3.7+ (depends on your Nuke version).
-- **PySide2**: Install using:
-  ```bash
-  pip install PySide2
-  ```
-
----
-
-## **How It Works**
-
-### **Key Components**
-- **Channel Retrieval**:
-  The `get_channels()` method extracts all unique base layer names from the node's channels.
-
-- **Custom Sorting**:
-  Channels are sorted with `rgb`, `rgba`, and `alpha` prioritized, followed by others alphabetically.
-
-- **Interactive GUI**:
-  The `ChannelButtonPanel` class creates a dialog with buttons for each channel.
-
----
-
-## **Preview**
-
-![Channel Selector Screenshot](assets/screenshots/shuffle_shift_snip.png)
-
-
----
-
-## **Future Enhancements**
-
-- Add search functionality for large channel lists.
-- Extend support for additional node types.
-- Allow customization of priority channels.
+- **Nuke**: Version 11 and above (tested up to Nuke 15).
+- **Python**: Compatible with Nuke’s built-in Python (2.7+ or 3.7+, depending on version).
+- **PySide2**: Included with Nuke; no external installation needed.
 
 ---
 
 ## **Contributing**
 
-Contributions are welcome! Follow these steps:
+Contributions are welcome! To contribute:
 
-1. Fork this repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add new feature"
-   ```
-4. Push the branch:
-   ```bash
-   git push origin feature-name
-   ```
+1. Fork the repository.
+2. Create a branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -m "Add feature"`
+4. Push: `git push origin feature-name`
 5. Open a pull request.
 
 ---
 
-Thanks!
+## **Author**
 
-
-
-# Nuke Auto-Tag Input Node Script
-
-This Python script for **Nuke** automates the creation of a custom `Tag_Input` node, which tags and connects to a parent node by dynamically fetching and displaying its name.
-The script is designed to help compositors manage node connections more efficiently by providing quick access to node names and connections.
-
-## Features
-
-- **Auto-Generated Unique Names**: Every `Tag_Input` node created by this script is named dynamically (e.g., `Tag_input1`, `Tag_input2`, etc.), ensuring unique names each time the script is run.
-- **Fetch Node Name**: A button (`Get Name`) allows users to fetch and display the name of the currently selected node.
-- **Connect to Parent Node**: A `Connect` button is provided to automatically connect the newly created `Tag_input` node to the selected parent node.
-- **Jump to Input Node**: A `Jump to Input` button allows users to zoom in on the connected parent node in the Node Graph for quick navigation.
-
-## How to Install
-
-To install the script and set it up with a custom menu and keyboard shortcut, follow these steps:
-
-### 1. Place the Script in the `.nuke/python` Folder
-
-1. Copy the Python script file into your `.nuke/python` folder. This is where Nuke will look for Python scripts.
-
-### 2. Modify `init.py`
-
-2. Open or create the `init.py` file in your `.nuke` directory. Add the path to your Python folder where the script is stored:
-
-```python
-nuke.pluginAddPath('./python')
-```
-
-### 3. Create a New Menu Item in `menu.py`
-
-3. In the `.nuke` directory, open or create the `menu.py` file. You'll create a new menu called `V_commands` and assign a shortcut key (`Alt+T`) to run the script. Add the following lines to `menu.py`:
-
-```python
-import nuke
-import your_script_name  # Replace with your actual script name without the .py extension e.g. Tag_input.py
-
-# Create a custom menu in Nuke
-menubar = nuke.menu("Nuke")
-v_commands = menubar.addMenu("V_commands")
-
-# Add the command to the new menu and assign a shortcut
-v_commands.addCommand("Tag Input Node", lambda: your_script_name.create_tag_input_node(), "Alt+T")
-```
-
-### 4. Usage
-
-You can now use the script either by:
-
-- **Menu**: Go to `V_commands -> Tag Input Node`.
-- **Shortcut**: Press `Alt+T` to quickly run the script.
-
-### 5. Restart Nuke
-
-After these changes, restart Nuke for the script and menu item to appear.
-
-## How to Use
-
-1. **Run the Script**: Either use the menu option (`V_commands -> Tag Input Node`) or press the keyboard shortcut (`Alt+T`).
-   
-2. **Select a Node**: Once the `Tag_input` node is created, select any parent node in your Node Graph.
-
-3. **Fetch Node Name**:
-   - Click the `Get Name` button to fetch and display the selected node's name in the newly created `NoOp` node.
-
-4. **Connect to Parent Node**:
-   - Click the `Connect` button to automatically connect the `Tag_input` node to the parent node (the one whose name you fetched).
-
-5. **Jump to Input**:
-   - Use `Jump to Input` to zoom into the connected parent node in your Node Graph for easy navigation.
-
-
-## **Preview**
-
-![Channel Selector Screenshot](assets/screenshots/Tag_input_snip.png)
-
-
-## Error Handling
-
-- If no node is selected when you click `Get Name`, a message will prompt you to select a node.
-- If an invalid or non-existing node name is provided, a message will indicate that the node was not found.
-
-## Example
-
-1. Create a `Tag_input` node using the script.
-2. Select a node in the Node Graph, and click `Get Name` to assign its name to the `NoOp` node.
-3. Click `Connect` to automatically connect the `Tag_input` to the selected node.
-4. Use `Jump to Input` to zoom in on the connected parent node.
-
-## Contributing
-
-Contributions are welcome! If you'd like to improve the script or add new features, feel free to fork the repository and submit a pull request.
-
-
-## Contact
-
-For any questions or issues, feel free to reach out via GitHub issues or submit a pull request for improvements.
-
-
-# V_backdrop_inator
-
-**V_backdrop_inator** is a Nuke Python script that provides an interactive UI with buttons and a color picker for creating and managing backdrops efficiently.
-
-## Features
-- Creates backdrops with customizable colors.
-- Uses Qt widgets for an intuitive UI.
-- Provides quick interaction through buttons.
-
-## Installation
-### Windows
-1. Locate your `.nuke` directory, usually found at:
-   - `C:\Users\YourUsername\.nuke`
-2. Copy `V_backdrop_inator.py` into the `.nuke/python` folder (create the folder if it doesn’t exist).
-3. Update `init.py` (or create it if missing) inside `.nuke` with:
-
-   ```python
-   import os
-   import nuke
-   nuke.pluginAddPath(os.path.expanduser("~/.nuke/python"))
-   ```
-4. Modify `menu.py` in the `.nuke` folder:
-
-   ```python
-   import nuke
-   import V_backdrop_inator
-   
-   menubar = nuke.menu('Nuke')
-   v_commands = menubar.addMenu('V_commands')
-   v_commands.addCommand('Create Backdrop', 'V_backdrop_inator.launch_backdrop_creator()', 'ctrl+alt+B')
-   ```
-
-### macOS & Linux
-1. Open Terminal and navigate to your home directory:
-   ```sh
-   cd ~/.nuke
-   ```
-2. Create a `python` folder if it doesn’t exist:
-   ```sh
-   mkdir -p ~/.nuke/python
-   ```
-3. Move `V_backdrop_inator.py` into this folder.
-4. Add the following to `~/.nuke/init.py`:
-   ```python
-   import os
-   import nuke
-   nuke.pluginAddPath(os.path.expanduser("~/.nuke/python"))
-   ```
-5. Modify `~/.nuke/menu.py`:
-   ```python
-   import nuke
-   import V_backdrop_inator
-   
-   menubar = nuke.menu('Nuke')
-   v_commands = menubar.addMenu('V_commands')
-   v_commands.addCommand('Create Backdrop', 'V_backdrop_inator.launch_backdrop_creator()', 'ctrl+alt+B')
-   ```
-
-## Usage
-- Open Nuke.
-- Press `ctrl+alt+B` or use the `V_commands` menu to launch **V_backdrop_inator**.
-- Interact with the UI to create and modify backdrops effortlessly.
-
-## Screenshot
-![V_backdrop_inator UI](assets/screenshots/Backdrop_inator_snip.png)
-
-## Author
 Developed by **Vikas Kaushal**.
 
-## License
+---
+
+## **License**
+
 This project is licensed under the MIT License.
 
-## Contributions
-Feel free to submit issues or feature requests to improve this tool!
+---
 
+## **Contact**
+
+For questions or issues, reach out via GitHub issues or submit a pull request.
+```
