@@ -79,6 +79,9 @@ Simplifies channel selection for `Shuffle` and `Shuffle2` nodes with a button-ba
 4.  Click Cancel to close without changes.
 
 #### Preview
+![Shuffle Shift UI](assets/screenshots/shuffle_shift_snip.png)
+
+---
 
 ### 2. Tag Input Node
 
@@ -99,6 +102,9 @@ Automates creation of `Tag_Input` nodes to tag and connect to parent nodes, impr
 4.  Use `Jump to Input` to navigate to the parent.
 
 #### Preview
+![Tag Input UI](assets/screenshots/Tag_input_snip.png)
+
+---
 
 ### 3. Backdrop Inator
 
@@ -117,6 +123,9 @@ Creates customizable backdrops with an interactive UI and color picker for bette
 3.  Apply to create the backdrop in the node graph.
 
 #### Preview
+![Backdrop Inator UI](assets/screenshots/Backdrop_inator_snip.png)
+
+---
 
 ### 4. Shuffle Dropdown
 
@@ -138,6 +147,9 @@ Enhances channel management for `Shuffle` and `Shuffle2` nodes with dropdowns an
 4.  Click `Apply` to update the node.
 
 #### Preview
+![Shuffle Dropdown UI](assets/screenshots/V_shuffle_dropdown_snip.png)
+
+---
 
 ## Requirements
 
