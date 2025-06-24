@@ -51,8 +51,8 @@ Add all tools to a custom Nuke menu:
     v_commands = menubar.addMenu("V_commands")
     
     # Add tool commands
-    v_commands.addCommand("Shuffle Shift", "shuffle_shift.select_channel_for_shuffle()", "Alt+`")
-    v_commands.addCommand("Tag Input Node", "tag_input.create_tag_input_node()", "Alt+T")
+    v_commands.addCommand("Shuffle Shift", "Shuffle_shift.select_channel_for_shuffle()", "Alt+`")
+    v_commands.addCommand("Tag Input Node", "Tag_input.create_tag_input_node()", "Alt+T")
     v_commands.addCommand("Create Backdrop", "V_backdrop_inator.launch_backdrop_creator()", "Ctrl+Alt+B")
     v_commands.addCommand("Shuffle Dropdown", "V_shuffle_dropdown.create_shuffle_ui()", "Ctrl+Shift+S")
     ```
